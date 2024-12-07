@@ -36,7 +36,7 @@ uploaded_file = st.file_uploader(
     accept_multiple_files=False,
 )
 
-chat_with_doc(uploaded_file)
+chat_with_doc(base_dir, uploaded_file)
 
 
 
@@ -56,8 +56,8 @@ if st.button("Clear All Uploaded Data"):
     if os.path.exists(embedding_path):
         shutil.rmtree(embedding_path)
         
-    os.makedirs(upload_dir)
-    os.makedirs(embedding_path)
+    os.makedirs(upload_dir, exist_ok=True)
+    os.makedirs(embedding_path, exist_ok=True)
     
     
     st.success("All uploaded files have been cleared!")

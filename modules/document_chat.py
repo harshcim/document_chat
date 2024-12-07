@@ -26,10 +26,6 @@ base_dir = os.path.dirname(os.path.abspath(__file__))
 # Path defining 
 upload_dir = os.path.join(base_dir, "..","data")
 
-index_embedding = os.path.join(base_dir, "..", "embeddings", "vector_store.faiss")
-
-index_path = os.path.join(base_dir, "..", "embeddings", "vector_store.faiss", "index.faiss")
-
 
 
 
@@ -50,11 +46,11 @@ def load_embeddings_data(index_embedding):
 
 
 # Defining function for chat functionality
-def chat_with_doc(uploaded_file):
+def chat_with_doc(base_dir, uploaded_file):
     
     if not os.path.exists(upload_dir):
         os.makedirs(upload_dir)
-
+        
     
     # Display currently uploaded files
     st.subheader("Uploaded Files")
@@ -70,6 +66,11 @@ def chat_with_doc(uploaded_file):
     else:
         st.write("No files currently uploaded.")
         
+        
+        
+    index_embedding = os.path.join(base_dir, "..", "embeddings", "vector_store.faiss")
+
+    index_path = os.path.join(base_dir, "..", "embeddings", "vector_store.faiss", "index.faiss")
         
         
         

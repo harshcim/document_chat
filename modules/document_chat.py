@@ -80,8 +80,8 @@ def chat_with_doc(uploaded_file):
         # Save the uploaded file
         with open(file_path, "wb") as f:
             f.write(uploaded_file.getbuffer())
-        
-        st.success(f"File uploaded successfully!")
+            st.success(f"File uploaded successfully!")
+            
         
         # Trigger background processing if embeddings don't already exist
         if not os.path.exists(index_path):

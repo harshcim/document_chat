@@ -87,7 +87,7 @@ def chat_with_doc(uploaded_file):
         if not os.path.exists(index_path):
             with st.spinner("Processing your files..."):
                 documents = load_data()
-                if documents:
+                if documents and any(doc.page_content.strip() for doc in documents):
                     text_chunks = split_data(documents)
                     save_embeddings(text_chunks)
                     st.success("You can now query the data.")

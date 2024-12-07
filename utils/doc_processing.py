@@ -53,7 +53,7 @@ def load_data():
             loader_cls=UnstructuredFileLoader
         )
         
-        documents = documents = pdf_loader.load() + docx_loader.load()
+        documents = pdf_loader.load() + docx_loader.load()
 
         # print(documents)
         if not documents:

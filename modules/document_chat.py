@@ -74,11 +74,11 @@ def chat_with_doc(base_dir, uploaded_file):
         if not os.path.exists(index_path):
             with st.spinner("Processing your files..."):
                 
-                documents = load_data()
+                documents = load_data(base_dir)
 
                 if documents and any(doc.page_content.strip() for doc in documents):
                     text_chunks = split_data(documents)
-                    save_embeddings(text_chunks)
+                    save_embeddings(base_dir,text_chunks)
                     st.success("You can now query the data.")
                 else:
                     st.warning("No valid documents found to process.")

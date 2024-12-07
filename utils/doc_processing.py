@@ -14,7 +14,6 @@ sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)),".."))
 # from log.logger import setup_logger
 # logger = setup_logger("data_utils_logs")
 
-base_dir = os.path.dirname(os.path.abspath(__file__)) 
 
 from log.logger import setup_logger
 
@@ -36,7 +35,7 @@ logger = setup_logger("doc_processing_script")
 def load_data(base_dir):
     """Load data from the uploaded files in the specified directory."""
     
-    UPLOAD_DIR = os.path.join(base_dir, "data")
+    UPLOAD_DIR = os.path.join(base_dir,"data")
     
     if not os.path.exists(UPLOAD_DIR):
         # logger.error(f"The directory '{UPLOAD_DIR}' does not exist.")

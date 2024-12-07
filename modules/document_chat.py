@@ -52,6 +52,9 @@ def load_embeddings_data(index_embedding):
 # Defining function for chat functionality
 def chat_with_doc(uploaded_file):
     
+    if not os.path.exists(upload_dir):
+        os.makedirs(upload_dir)
+
     
     # Display currently uploaded files
     st.subheader("Uploaded Files")

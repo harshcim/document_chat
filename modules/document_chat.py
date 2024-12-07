@@ -157,7 +157,8 @@ def chat_with_doc(base_dir, uploaded_file):
         )
 
         # Query input box
-        question = st.text_input("Ask a question related to the documents:")
+        # question = st.text_input("Ask a question related to the documents:")
+        question = st.text_area("Ask a question related to the documents:", height=150)
 
         if question:
             with st.spinner("Fetching response..."):

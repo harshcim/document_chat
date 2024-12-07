@@ -1,5 +1,6 @@
 import os
 import sys
+import streamlit as st
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain_community.vectorstores import FAISS # type: ignore
 from langchain_community.document_loaders import DirectoryLoader,PyPDFLoader,UnstructuredFileLoader # type: ignore
@@ -32,10 +33,12 @@ def load_data():
     """Load data from the uploaded files in the specified directory."""
     if not os.path.exists(UPLOAD_DIR):
         # logger.error(f"The directory '{UPLOAD_DIR}' does not exist.")
+        st.warning(f"The directory '{UPLOAD_DIR}' does not exist.")
         return None
     
     if not os.listdir(UPLOAD_DIR):
         # logger.warning(f"The directory '{UPLOAD_DIR}' is empty.")
+        st.warning(f"The directory '{UPLOAD_DIR}' is empty.")
         return None
 
     try:      

@@ -3,6 +3,8 @@ import os
 import sys
 import shutil
 import streamlit as st  # type: ignore
+from dotenv import load_dotenv
+import google.generativeai as genai
 from langchain_google_genai import GoogleGenerativeAIEmbeddings
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_community.vectorstores import FAISS 
@@ -12,22 +14,16 @@ from langchain.chains import RetrievalQA
 sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."))
 
 from utils.doc_processing import load_data, split_data, save_embeddings
+from utils.file_utils import list_uploaded_files, save_uploaded_file
 from log.logger import setup_logger
 
 
 
 
-# Defining base directory
-base_dir = os.path.dirname(os.path.abspath(__file__))
 
-
-
-
-# Path defining 
-upload_dir = os.path.join(base_dir, "..","data")
-
-
-
+# Load environment variables0
+load_dotenv()   
+genai.configure(api_key=os.getenv("GOOGLE_API_KEY"))
 
 # Model defining
 rag_model = ChatGoogleGenerativeAI(model="gemini-1.5-flash-latest", temperature=0.5, max_output_tokens=8192)
@@ -47,50 +43,39 @@ def load_embeddings_data(index_embedding):
 
 # Defining function for chat functionality
 def chat_with_doc(base_dir, uploaded_file):
-    
-    if not os.path.exists(upload_dir):
-        os.makedirs(upload_dir)
         
     
     # Display currently uploaded files
     st.subheader("Uploaded Files")
-    
-    uploaded_files = os.listdir(upload_dir)
+    uploaded_files = list_uploaded_files()
+
     
     if uploaded_files:
         st.write("Currently available files in the directory:")
         for file in uploaded_files:
-            # Check if the file is PDF or DOCX
-            if file.endswith(".pdf") or file.endswith(".docx"):
-                st.write(f"- {file}")
+            st.write(f"- {file}")
     else:
         st.write("No files currently uploaded.")
         
         
         
-    index_embedding = os.path.join(base_dir, "..", "embeddings", "vector_store.faiss")
+    index_embedding = os.path.join(base_dir, "embeddings", "vector_store.faiss")
 
-    index_path = os.path.join(base_dir, "..", "embeddings", "vector_store.faiss", "index.faiss")
+    index_path = os.path.join(base_dir,"embeddings", "vector_store.faiss", "index.faiss")
         
         
         
     if uploaded_file:
-        # Define the save path
-        file_path = os.path.join(upload_dir, uploaded_file.name)
-        
-        # Save the uploaded file
-        with open(file_path, "wb") as f:
-            f.write(uploaded_file.getbuffer())
-            st.success(f"File uploaded successfully!")
+        save_uploaded_file(uploaded_file)
+        st.success(f"File '{uploaded_file.name}' has been uploaded and stored.")
             
         
         # Trigger background processing if embeddings don't already exist
         if not os.path.exists(index_path):
             with st.spinner("Processing your files..."):
+                
                 documents = load_data()
-                
-                print(documents)
-                
+
                 if documents and any(doc.page_content.strip() for doc in documents):
                     text_chunks = split_data(documents)
                     save_embeddings(text_chunks)

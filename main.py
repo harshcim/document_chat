@@ -12,6 +12,7 @@ from langchain.chains import RetrievalQA
 sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."))
 
 from modules.document_chat import chat_with_doc
+from utils.file_utils import delete_all_files_and_directories
 from utils.doc_processing import load_data, split_data, save_embeddings
 from log.logger import setup_logger
 
@@ -29,6 +30,8 @@ logger = setup_logger("main_script")
 st.title("Chat with Document")
 st.write("Upload PDF or DOCX files to build your dynamic knowledge base")
 
+
+
 # File uploader for PDF and ZIP files
 uploaded_file = st.file_uploader(
     "Upload a PDF, DOCX",
@@ -36,28 +39,11 @@ uploaded_file = st.file_uploader(
     accept_multiple_files=False,
 )
 
+
 chat_with_doc(base_dir, uploaded_file)
 
 
-
-    
-    
-    
     
 if st.button("Clear All Uploaded Data"):
-    
-    embedding_path = os.path.join(base_dir,"embeddings", "vector_store.faiss")
-    
-    upload_dir = os.path.join(base_dir,"data")
-    
-    if os.path.exists(upload_dir):
-        shutil.rmtree(upload_dir)        
-    
-    if os.path.exists(embedding_path):
-        shutil.rmtree(embedding_path)
-        
-    os.makedirs(upload_dir, exist_ok=True)
-    os.makedirs(embedding_path, exist_ok=True)
-    
-    
+    delete_all_files_and_directories()
     st.success("All uploaded files have been cleared!")

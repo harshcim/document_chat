@@ -45,11 +45,11 @@ def load_data():
     
     
     if not os.path.exists(UPLOAD_DIR):
-        # logger.error(f"The directory '{UPLOAD_DIR}' does not exist.")
+        st.error(f"The directory '{UPLOAD_DIR}' does not exist.")
         return None
     
     if not os.listdir(UPLOAD_DIR):
-        # logger.warning(f"The directory '{UPLOAD_DIR}' is empty.")
+        st.warning(f"The directory '{UPLOAD_DIR}' is empty.")
         return None
 
     try:      

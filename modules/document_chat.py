@@ -79,7 +79,7 @@ def chat_with_doc(base_dir, uploaded_file):
                 
                 if documents and any(doc.page_content.strip() for doc in documents):
                     text_chunks = split_data(documents)
-                    st.write(f"Documents loaded: {len(documents)}")
+                    # st.write(f"Documents loaded: {len(text_chunks)}")
                     save_embeddings(text_chunks)
                     st.success("You can now query the data.")
                 else:

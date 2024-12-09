@@ -75,7 +75,10 @@ def chat_with_doc(base_dir, uploaded_file):
                 
                 documents = load_data()
                 
-                st.write(f"Documents loaded: {len(documents)}")
+                if documents:
+                    st.write(f"Documents loaded: {len(documents)}")
+                else:
+                    st.warning("No documents were loaded.")
                 
                 if documents and any(doc.page_content.strip() for doc in documents):
                     text_chunks = split_data(documents)

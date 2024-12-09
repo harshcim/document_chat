@@ -68,15 +68,19 @@ def chat_with_doc(base_dir, uploaded_file):
     if uploaded_file:
         save_uploaded_file(uploaded_file)
         st.success(f"File '{uploaded_file.name}' has been uploaded and stored.")
+        
         # Trigger background processing if embeddings don't already exist
         if not os.path.exists(index_path):
             with st.spinner("Processing your files..."):
                 
-                documents = load_data(base_dir)
-
+                documents = load_data()
+                
+                st.write(f"Documents loaded: {len(documents)}")
+                
                 if documents and any(doc.page_content.strip() for doc in documents):
                     text_chunks = split_data(documents)
-                    save_embeddings(base_dir,text_chunks)
+                    st.write(f"Documents loaded: {len(documents)}")
+                    save_embeddings(text_chunks)
                     st.success("You can now query the data.")
                 else:
                     st.warning("No valid documents found to process.")

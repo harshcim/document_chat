@@ -17,6 +17,9 @@ sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)),".."))
 
 from log.logger import setup_logger
 
+
+base_dir = os.path.dirname(os.path.abspath(__file__)) 
+
 load_dotenv()
 os.getenv("GOOGLE_API_KEY")
 genai.configure(api_key=os.getenv("GOOGLE_API_KEY"))
@@ -28,14 +31,18 @@ logger = setup_logger("doc_processing_script")
 
 
 # Paths for directories
+UPLOAD_DIR = os.path.join(base_dir,"..","data")
+
+VECTOR_DB_PATH = os.path.join(base_dir,"..","embeddings", "vector_store.faiss")
 
 
 
 
-def load_data(base_dir):
+
+
+def load_data():
     """Load data from the uploaded files in the specified directory."""
     
-    UPLOAD_DIR = os.path.join(base_dir,"data")
     
     if not os.path.exists(UPLOAD_DIR):
         # logger.error(f"The directory '{UPLOAD_DIR}' does not exist.")
@@ -83,10 +90,8 @@ def split_data(documents):
 
 
 
-def save_embeddings(base_dir,text_chunks):
+def save_embeddings(text_chunks):
     """Generate embeddings using Google Generative AI and save to a FAISS vector database."""
-    
-    VECTOR_DB_PATH = os.path.join(base_dir, "embeddings", "vector_store.faiss")
         
     # Use Google Generative AI for embeddings
     embeddings = GoogleGenerativeAIEmbeddings(model="models/text-embedding-004")
